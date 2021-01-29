@@ -25,9 +25,23 @@ namespace Boek.Data.Db {
         return $@"{dir}\{DataFile}";
       }
     }
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
-      optionsBuilder.UseSqlite($@"Data Source={DataPath}");
-      base.OnConfiguring(optionsBuilder);
-    }
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+      //optionsBuilder.UseSqlite($@"Data Source={DataPath}");
+      //base.OnConfiguring(optionsBuilder);
+
+
+            string databasePath = $@"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData).Trim('\\')}\Databases";
+            string databaseName = "Boek.db";
+
+            if (!Directory.Exists(databasePath))
+            {
+                Directory.CreateDirectory(databasePath);
+            }
+
+            optionsBuilder.UseSqlite($@"Data source={databasePath}\{databaseName}"); // database storage in C:\Users\***\AppData\Roaming\Databases -> met *** eigen account
+            base.OnConfiguring(optionsBuilder);
+
+        }
   }
 }
