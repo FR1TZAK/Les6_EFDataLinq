@@ -20,28 +20,16 @@ namespace Boek.Data.Db {
     public DbSet<Taal> Talen { get; set; }
     public string DataPath {
       get {
-        string dir = @$"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData).TrimEnd('\\')}\BoekDb";
+        string dir = @$"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData).TrimEnd('\\')}\Databases";
         if (!Directory.Exists(dir)) { Directory.CreateDirectory(dir); }
         return $@"{dir}\{DataFile}";
       }
     }
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-      //optionsBuilder.UseSqlite($@"Data Source={DataPath}");
-      //base.OnConfiguring(optionsBuilder);
-
-
-            string databasePath = $@"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData).Trim('\\')}\Databases";
-            string databaseName = "Boek.db";
-
-            if (!Directory.Exists(databasePath))
-            {
-                Directory.CreateDirectory(databasePath);
-            }
-
-            optionsBuilder.UseSqlite($@"Data source={databasePath}\{databaseName}"); // database storage in C:\Users\***\AppData\Roaming\Databases -> met *** eigen account
+            optionsBuilder.UseSqlite($@"Data Source={DataPath}");
             base.OnConfiguring(optionsBuilder);
 
-        }
+    }
   }
 }
